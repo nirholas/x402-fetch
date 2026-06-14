@@ -1,0 +1,6 @@
+tests/
+vite.config.js
+src/*.js
+src/crypto/
+.gitignore
+*.log

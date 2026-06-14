@@ -1,0 +1,60 @@
+{
+	"name": "@three-ws/x402-fetch",
+	"version": "1.0.0",
+	"description": "Drop-in fetch wrapper that automatically pays x402 payment challenges with USDC on Base",
+	"type": "module",
+	"main": "dist/index.cjs",
+	"module": "dist/index.esm.js",
+	"types": "src/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.d.ts",
+			"import": "./dist/index.esm.js",
+			"require": "./dist/index.cjs"
+		},
+		"./wallet": {
+			"types": "./src/wallet.d.ts",
+			"import": "./dist/wallet.esm.js",
+			"require": "./dist/wallet.cjs"
+		}
+	},
+	"files": [
+		"dist",
+		"src/*.d.ts",
+		"README.md",
+		"LICENSE"
+	],
+	"scripts": {
+		"build": "vite build",
+		"test": "node --test tests/*.test.mjs",
+		"prepublishOnly": "npm run build && npm test"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"vite": "^5.0.0"
+	},
+	"keywords": [
+		"x402",
+		"payments",
+		"fetch",
+		"usdc",
+		"base",
+		"eip-3009",
+		"agent",
+		"three.ws"
+	],
+	"author": "nirholas <support@three.ws>",
+	"homepage": "https://three.ws",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nirholas/three.ws.git",
+		"directory": "packages/x402-fetch"
+	},
+	"bugs": {
+		"url": "https://github.com/nirholas/three.ws/issues"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"license": "MIT"
+}

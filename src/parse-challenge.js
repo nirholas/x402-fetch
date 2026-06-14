@@ -1,0 +1,105 @@
+// Parse a 402 Payment Required response into a normalised list of payment
+// requirements. three.ws (and every CDP-x402 / agentic.market merchant) emits the
+// v2 envelope both as the JSON body and as the base64 `PAYMENT-REQUIRED` response
+// header; we read the header first (it survives an already-consumed body and a
+// non-JSON content-type) and fall back to the body.
+//
+//   { x402Version: 2, error, resource: { url, ... },
+//     accepts: [{ scheme, network, amount, asset, payTo, maxTimeoutSeconds, extra }],
+//     extensions }
+
+// Base USDC — the asset/network this wrapper signs for locally (EIP-3009).
+export const USDC_BASE = '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913';
+export const NETWORK_BASE = 'eip155:8453';
+
+function b64decodeJson(str) {
+	if (!str) return null;
+	try {
+		const json =
+			typeof Buffer !== 'undefined'
+				? Buffer.from(str, 'base64').toString('utf8')
+				: decodeURIComponent(escape(atob(str)));
+		return JSON.parse(json);
+	} catch {
+		return null;
+	}
+}
+
+function isEvmNetwork(net) {
+	return typeof net === 'string' && net.startsWith('eip155:');
+}
+
+// EIP-3009 transferWithAuthorization is the only EVM asset-transfer method this
+// zero-dep wrapper signs. Skip Permit2 siblings (extra.assetTransferMethod ===
+// 'permit2') — signing typed data against them yields a payload the facilitator
+// rejects.
+function isEip3009Accept(accept) {
+	if (!isEvmNetwork(accept?.network)) return false;
+	if (accept.scheme && accept.scheme !== 'exact') return false;
+	const method = accept?.extra?.assetTransferMethod;
+	return !method || method === 'eip3009';
+}
+
+// Auth-hint placeholders (amount "0" / extra.authRequired) are never payable.
+function isPayable(accept) {
+	if (!accept || typeof accept !== 'object') return false;
+	if (accept.extra?.authRequired != null) return false;
+	return String(accept.amount ?? accept.maxAmountRequired ?? '') !== '0';
+}
+
+// Coerce the spec's `maxAmountRequired` alias onto `amount`.
+function normalizeAccept(accept) {
+	const amount = accept.amount ?? accept.maxAmountRequired;
+	return amount != null && accept.amount == null ? { ...accept, amount: String(amount) } : accept;
+}
+
+/**
+ * Read the challenge envelope from a 402 Response.
+ * @param {Response} response
+ * @returns {Promise<{ accepts: any[], resource: any, raw: any } | null>}
+ */
+export async function parseChallenge(response) {
+	let envelope = b64decodeJson(
+		response.headers.get('payment-required') || response.headers.get('x-payment-required'),
+	);
+	if (!envelope) {
+		const ct = response.headers.get('content-type') || '';
+		if (!ct.includes('json')) return null;
+		try {
+			envelope = await response.clone().json();
+		} catch {
+			return null;
+		}
+	}
+	const accepts = Array.isArray(envelope?.accepts)
+		? envelope.accepts.map(normalizeAccept)
+		: [];
+	return { accepts, resource: envelope?.resource || null, raw: envelope };
+}
+
+/**
+ * Select the payment requirement this wrapper can satisfy. Prefers Base USDC
+ * (the spec target), then any other EVM EIP-3009 USDC entry.
+ * @param {any[]} accepts
+ * @param {{ preferNetwork?: string }} [opts]
+ * @returns {any | null}
+ */
+export function selectRequirement(accepts, { preferNetwork } = {}) {
+	const payable = accepts.filter((a) => isPayable(a) && isEip3009Accept(a));
+	if (!payable.length) return null;
+	if (preferNetwork) {
+		const want = payable.find((a) => a.network === preferNetwork);
+		if (want) return want;
+	}
+	const base = payable.find((a) => a.network === NETWORK_BASE);
+	return base || payable[0];
+}
+
+/** Atomic price → USD float, honouring the asset's declared decimals (default 6). */
+export function amountToUsd(accept) {
+	const decimals = Number(accept?.extra?.decimals ?? 6);
+	const atomic = Number(accept?.amount ?? 0);
+	return atomic / 10 ** decimals;
+}
+
+export { isEvmNetwork, isEip3009Accept };
