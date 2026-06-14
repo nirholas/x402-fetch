@@ -55,12 +55,16 @@ export function buildEip3009TypedData({ accept, payerAddress, chainId, nowSecond
 			{ name: 'nonce', type: 'bytes32' },
 		],
 	};
+	// The x402 v2 `exact` PaymentRequirements schema (and the CDP facilitator that
+	// validates it) require the authorization's numeric fields as decimal STRINGS.
+	// The signed EIP-712 message hashes them as uint256 either way, so the
+	// signature stays valid; the strings are what the facilitator parses.
 	const authorization = {
 		from: payerAddress,
 		to: accept.payTo,
 		value: String(accept.amount),
-		validAfter: 0,
-		validBefore,
+		validAfter: '0',
+		validBefore: String(validBefore),
 		nonce: nonce || randomNonce(),
 	};
 	return {
@@ -69,15 +73,19 @@ export function buildEip3009TypedData({ accept, payerAddress, chainId, nowSecond
 	};
 }
 
-/** Assemble the v2 PaymentPayload for an EVM EIP-3009 signature. */
-export function buildPaymentPayload({ accept, signature, authorization, resourceUrl }) {
+// Assemble the x402 v2 `exact`-scheme PaymentPayload. The shape mirrors
+// @x402/evm's ExactEvmScheme exactly — `{ x402Version, scheme, network,
+// payload: { authorization, signature } }` with NO extra keys, since the CDP
+// facilitator's schema union rejects anything that doesn't match a branch.
+export function buildPaymentPayload({ accept, signature, authorization }) {
 	return {
 		x402Version: 2,
-		scheme: 'exact',
+		scheme: accept.scheme || 'exact',
 		network: accept.network,
-		resource: resourceUrl ? { url: resourceUrl, mimeType: 'application/json' } : undefined,
+		// The CDP v2 schema requires the matched requirement echoed back as
+		// `accepted` so the facilitator binds the payment to the exact offer.
 		accepted: accept,
-		payload: { signature, authorization },
+		payload: { authorization, signature },
 	};
 }
 
@@ -86,7 +94,7 @@ export function buildPaymentPayload({ accept, signature, authorization, resource
  * @param {{ accept: any, adapter: { getAddress: () => Promise<string>, signTypedData: (td:any)=>Promise<string> }, resourceUrl?: string, nowSeconds?: number, nonce?: string }} args
  * @returns {Promise<string>}
  */
-export async function createPaymentHeader({ accept, adapter, resourceUrl, nowSeconds, nonce }) {
+export async function createPaymentHeader({ accept, adapter, nowSeconds, nonce }) {
 	if (!isEvmNetwork(accept.network)) {
 		throw new Error(
 			`x402: network "${accept.network}" is not locally signable by @three-ws/x402-fetch (EVM EIP-3009 / USDC on Base only)`,
@@ -105,7 +113,7 @@ export async function createPaymentHeader({ accept, adapter, resourceUrl, nowSec
 		nonce,
 	});
 	const signature = await adapter.signTypedData(typedData);
-	const payload = buildPaymentPayload({ accept, signature, authorization, resourceUrl });
+	const payload = buildPaymentPayload({ accept, signature, authorization });
 	return b64encode(payload);
 }
 

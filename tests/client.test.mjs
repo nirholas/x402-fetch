@@ -78,9 +78,22 @@ test('2. the retried request carries a correct X-PAYMENT header', async () => {
 	assert.equal(payload.x402Version, 2);
 	assert.equal(payload.scheme, 'exact');
 	assert.equal(payload.network, 'eip155:8453');
-	assert.equal(payload.payload.authorization.to, PAY_TO);
-	assert.equal(payload.payload.authorization.value, '50000');
-	assert.equal(payload.payload.authorization.from, WALLET.address);
+	// v2 exact-scheme shape: top-level echoes `accepted`; payload is exactly
+	// { authorization, signature } — no stray keys the CDP schema would reject.
+	assert.deepEqual(
+		Object.keys(payload).sort(),
+		['accepted', 'network', 'payload', 'scheme', 'x402Version'],
+	);
+	assert.deepEqual(payload.accepted, baseAccept(50_000));
+	assert.deepEqual(Object.keys(payload.payload).sort(), ['authorization', 'signature']);
+	const auth = payload.payload.authorization;
+	assert.equal(auth.to, PAY_TO);
+	assert.equal(auth.value, '50000');
+	assert.equal(auth.from, WALLET.address);
+	// Numeric fields MUST be decimal strings (CDP facilitator schema requires it).
+	assert.equal(auth.validAfter, '0');
+	assert.equal(typeof auth.validBefore, 'string');
+	assert.match(auth.nonce, /^0x[0-9a-f]{64}$/);
 	// 65-byte recoverable signature (0x + 130 hex).
 	assert.match(payload.payload.signature, /^0x[0-9a-f]{130}$/);
 });

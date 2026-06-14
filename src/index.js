@@ -104,7 +104,7 @@ export function withX402(arg1, arg2) {
 		if (onPayment) onPayment({ amount: usd, to: payTo, requestUrl });
 
 		const xPayment = await withTimeout(
-			createPaymentHeader({ accept, adapter, resourceUrl: challenge.resource?.url || requestUrl }),
+			createPaymentHeader({ accept, adapter }),
 			timeout,
 			'payment authorization',
 		);
