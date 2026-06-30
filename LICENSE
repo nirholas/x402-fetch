@@ -1,21 +1,38 @@
-MIT License
+PROPRIETARY SOFTWARE LICENSE
 
-Copyright (c) 2026 nirholas
+Copyright (c) 2026 nirholas. All Rights Reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This software, including all source code, documentation, configuration, build
+output, and associated files in this repository (collectively, the "Software"),
+is the proprietary and confidential property of nirholas (the "Owner"). The
+Software is protected by copyright laws and international treaty provisions. All
+right, title, and interest in and to the Software, including all copyrights,
+trademarks, trade secrets, patents, and other intellectual property rights, are
+and shall remain the sole and exclusive property of the Owner.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+NO LICENSE OR RIGHT IS GRANTED. No person or entity is granted any license or
+right to access, use, copy, reproduce, modify, adapt, translate, merge, publish,
+distribute, sublicense, sell, lease, rent, lend, transmit, host, display,
+perform, create derivative works from, decompile, disassemble, reverse engineer,
+or otherwise exploit the Software, in whole or in part, in any form or by any
+means, without the express prior written permission of the Owner in each
+instance.
+
+Unauthorized access, use, reproduction, modification, or distribution of the
+Software, or of any portion of it, is strictly prohibited, constitutes
+infringement of the Owner's intellectual property rights, and may result in
+severe civil and criminal penalties. Violations will be prosecuted to the
+maximum extent permitted by law.
+
+Third-party components, dependencies, and protocols referenced or required by the
+Software remain governed by their own respective licenses; this License applies
+solely to the original works authored by the Owner contained in this repository.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE, TITLE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE OWNER
+BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+For licensing inquiries, contact the Owner at https://github.com/nirholas.

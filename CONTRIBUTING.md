@@ -45,4 +45,4 @@ Open an issue at <https://github.com/nirholas/x402-fetch/issues> with the x402 c
 
 ## License
 
-By contributing you agree your contributions are licensed under the [MIT License](./LICENSE).
+Proprietary — Copyright (c) 2026 nirholas. All Rights Reserved. Unauthorized use, copying, modification, or distribution is prohibited. By contributing you agree your contributions become the proprietary property of nirholas and are governed by the [LICENSE](./LICENSE).

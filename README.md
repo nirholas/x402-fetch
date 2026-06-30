@@ -3,7 +3,7 @@
 **A drop-in `fetch` that silently pays [x402](https://x402.org) payment challenges.** Wrap a wallet once, then call any paid x402 endpoint as if it were free — on a `402 Payment Required` the wrapper parses the challenge, signs a USDC-on-Base EIP-3009 authorization, and retries with the proof, all before your `await` resolves.
 
 [![npm version](https://img.shields.io/npm/v/@nirholas/x402-fetch.svg)](https://www.npmjs.com/package/@nirholas/x402-fetch)
-[![license](https://img.shields.io/npm/l/@nirholas/x402-fetch.svg)](./LICENSE)
+[![License: Proprietary](https://img.shields.io/badge/license-Proprietary-red.svg)](./LICENSE)
 [![node](https://img.shields.io/node/v/@nirholas/x402-fetch.svg)](https://nodejs.org)
 [![zero dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](./package.json)
 
@@ -324,4 +324,4 @@ The challenge `amount` is atomic units. With USDC's 6 decimals, `50000` = `$0.05
 
 ## License
 
-MIT © [nirholas](https://github.com/nirholas)
+Proprietary — Copyright (c) 2026 nirholas. All Rights Reserved. Unauthorized use, copying, modification, or distribution is prohibited. See [LICENSE](./LICENSE).
