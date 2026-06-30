@@ -1,17 +1,17 @@
-# @nirholas/x402-fetch
+# @three-ws/x402-fetch
 
 **A drop-in `fetch` that silently pays [x402](https://x402.org) payment challenges.** Wrap a wallet once, then call any paid x402 endpoint as if it were free — on a `402 Payment Required` the wrapper parses the challenge, signs a USDC-on-Base EIP-3009 authorization, and retries with the proof, all before your `await` resolves.
 
-[![npm version](https://img.shields.io/npm/v/@nirholas/x402-fetch.svg)](https://www.npmjs.com/package/@nirholas/x402-fetch)
+[![npm version](https://img.shields.io/npm/v/@three-ws/x402-fetch.svg)](https://www.npmjs.com/package/@three-ws/x402-fetch)
 [![License: Proprietary](https://img.shields.io/badge/license-Proprietary-red.svg)](./LICENSE)
-[![node](https://img.shields.io/node/v/@nirholas/x402-fetch.svg)](https://nodejs.org)
+[![node](https://img.shields.io/node/v/@three-ws/x402-fetch.svg)](https://nodejs.org)
 [![zero dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](./package.json)
 
 ---
 
 ## What it is
 
-The [x402 protocol](https://x402.org) lets an HTTP server respond `402 Payment Required` with a machine-readable challenge instead of an API key. `@nirholas/x402-fetch` is the client half: it is a function with the exact same signature as `fetch`, but when it receives a 402 it pays the challenge with USDC on Base and transparently retries. Your application code never sees the 402 — it just gets the `200` and the data.
+The [x402 protocol](https://x402.org) lets an HTTP server respond `402 Payment Required` with a machine-readable challenge instead of an API key. `@three-ws/x402-fetch` is the client half: it is a function with the exact same signature as `fetch`, but when it receives a 402 it pays the challenge with USDC on Base and transparently retries. Your application code never sees the 402 — it just gets the `200` and the data.
 
 It is built for autonomous agents, scripts, and apps that need to pay per request without a checkout flow, an SDK login, or a stored API key.
 
@@ -26,7 +26,7 @@ It is built for autonomous agents, scripts, and apps that need to pay per reques
 ## Install
 
 ```bash
-npm install @nirholas/x402-fetch
+npm install @three-ws/x402-fetch
 ```
 
 Requires **Node.js ≥ 18** (for global `fetch` and Web Crypto) or any modern browser. No native modules, no post-install scripts.
@@ -36,8 +36,8 @@ Requires **Node.js ≥ 18** (for global `fetch` and Web Crypto) or any modern br
 From zero to a paid request in under a minute. In Node, with a funded Base wallet:
 
 ```js
-import { withX402 } from '@nirholas/x402-fetch';
-import { privateKeyToWallet } from '@nirholas/x402-fetch/wallet';
+import { withX402 } from '@three-ws/x402-fetch';
+import { privateKeyToWallet } from '@three-ws/x402-fetch/wallet';
 
 // 1. Wrap your wallet. This is the only setup step.
 const pay = withX402(privateKeyToWallet(process.env.WALLET_PRIVATE_KEY), {
@@ -58,7 +58,7 @@ console.log(await res.json());
 In the browser, pass the injected provider instead:
 
 ```js
-import { withX402 } from '@nirholas/x402-fetch';
+import { withX402 } from '@three-ws/x402-fetch';
 
 const pay = withX402(window.ethereum, { maxPaymentUsd: 0.10 });
 const res = await pay('https://api.example.com/paid');
@@ -135,13 +135,13 @@ Upstream-compatible alias. Always fetch-first. Equivalent to `withX402(fetch, { 
 | `options` | `X402Options` | `undefined` | See [Configuration](#configuration-reference). |
 
 ```js
-import { wrapFetchWithPayment } from '@nirholas/x402-fetch';
+import { wrapFetchWithPayment } from '@three-ws/x402-fetch';
 const pay = wrapFetchWithPayment(fetch, wallet, { maxPaymentUsd: 0.25 });
 ```
 
 ### `privateKeyToWallet(pk)` → `{ address, signTypedData }`
 
-Builds a Node signer from a raw private key using the inlined secp256k1 stack — no external wallet library. Available from the root export **and** the `@nirholas/x402-fetch/wallet` subpath (import the subpath if you only need the signer, e.g. in a worker).
+Builds a Node signer from a raw private key using the inlined secp256k1 stack — no external wallet library. Available from the root export **and** the `@three-ws/x402-fetch/wallet` subpath (import the subpath if you only need the signer, e.g. in a worker).
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -152,7 +152,7 @@ Builds a Node signer from a raw private key using the inlined secp256k1 stack �
 **Throws** — `x402: private key must be 32 bytes` or `x402: private key out of range` for an invalid key.
 
 ```js
-import { privateKeyToWallet } from '@nirholas/x402-fetch/wallet';
+import { privateKeyToWallet } from '@three-ws/x402-fetch/wallet';
 const wallet = privateKeyToWallet('0x...');
 console.log(wallet.address); // 0xAbC… (checksummed)
 ```
@@ -166,8 +166,8 @@ console.log(wallet.address); // 0xAbC… (checksummed)
 A `0x`-hex string (or `Uint8Array`). Signed locally with the inlined secp256k1 — nothing leaves the process. Best for servers, agents, and CI.
 
 ```js
-import { withX402 } from '@nirholas/x402-fetch';
-import { privateKeyToWallet } from '@nirholas/x402-fetch/wallet';
+import { withX402 } from '@three-ws/x402-fetch';
+import { privateKeyToWallet } from '@three-ws/x402-fetch/wallet';
 
 const pay = withX402(privateKeyToWallet(process.env.WALLET_PRIVATE_KEY));
 ```
@@ -179,7 +179,7 @@ const pay = withX402(privateKeyToWallet(process.env.WALLET_PRIVATE_KEY));
 Any object with a `request()` method — `window.ethereum`, MetaMask, Coinbase Wallet, WalletConnect, etc. The wrapper calls `eth_requestAccounts` to resolve the address and `eth_signTypedData_v4` to sign; the user approves the signature in their wallet.
 
 ```js
-import { withX402 } from '@nirholas/x402-fetch';
+import { withX402 } from '@three-ws/x402-fetch';
 
 const pay = withX402(window.ethereum);
 ```
@@ -189,7 +189,7 @@ const pay = withX402(window.ethereum);
 Any object exposing `address` (or `account.address`) and a `signTypedData(typedData)` method that returns a hex signature. A viem `LocalAccount` satisfies this directly.
 
 ```js
-import { withX402 } from '@nirholas/x402-fetch';
+import { withX402 } from '@three-ws/x402-fetch';
 import { privateKeyToAccount } from 'viem/accounts';
 
 const account = privateKeyToAccount(process.env.WALLET_PRIVATE_KEY);
@@ -311,9 +311,9 @@ The challenge `amount` is atomic units. With USDC's 6 decimals, `50000` = `$0.05
 
 ## Related packages
 
-- **[`@nirholas/x402-server`](https://www.npmjs.com/package/@nirholas/x402-server)** — the server half: gate any endpoint behind an x402 challenge and verify payments.
-- **[`@nirholas/x402-mcp`](https://www.npmjs.com/package/@nirholas/x402-mcp)** — pay-per-call x402 for MCP (Model Context Protocol) tools.
-- **[`@nirholas/x402-payment-modal`](https://www.npmjs.com/package/@nirholas/x402-payment-modal)** — a browser UI modal for x402 payment approval.
+- **[`@three-ws/x402-server`](https://www.npmjs.com/package/@three-ws/x402-server)** — the server half: gate any endpoint behind an x402 challenge and verify payments.
+- **[`@three-ws/x402-mcp`](https://www.npmjs.com/package/@three-ws/x402-mcp)** — pay-per-call x402 for MCP (Model Context Protocol) tools.
+- **[`@three-ws/x402-payment-modal`](https://www.npmjs.com/package/@three-ws/x402-payment-modal)** — a browser UI modal for x402 payment approval.
 - **[x402 protocol spec](https://x402.org)** — the open standard this package implements.
 
 ## Documentation

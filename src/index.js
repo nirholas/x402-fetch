@@ -1,10 +1,10 @@
-// @nirholas/x402-fetch — a drop-in `fetch` that silently answers x402 payment
+// @three-ws/x402-fetch — a drop-in `fetch` that silently answers x402 payment
 // challenges. Wrap a wallet once, then call any paid x402 endpoint (CDP-x402 or
 // any compliant merchant) as if it were free: on a 402 the wrapper parses the
 // challenge, signs a USDC-on-Base EIP-3009 authorization, and retries with the
 // X-PAYMENT proof.
 //
-//   import { withX402 } from '@nirholas/x402-fetch';
+//   import { withX402 } from '@three-ws/x402-fetch';
 //   const pay = withX402(wallet, { maxPaymentUsd: 0.10 });
 //   const res = await pay('https://api.example.com/paid', { method: 'POST', body });
 //

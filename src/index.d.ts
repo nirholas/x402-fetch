@@ -1,4 +1,4 @@
-// Type definitions for @nirholas/x402-fetch
+// Type definitions for @three-ws/x402-fetch
 
 export interface EIP1193Provider {
 	request(args: { method: string; params?: unknown[] | object }): Promise<unknown>;

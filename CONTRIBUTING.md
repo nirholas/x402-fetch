@@ -1,4 +1,4 @@
-# Contributing to `@nirholas/x402-fetch`
+# Contributing to `@three-ws/x402-fetch`
 
 Thanks for helping improve x402-fetch. This package has **zero runtime dependencies** by design — the secp256k1, keccak256, and EIP-712 stack is inlined under `src/crypto/`. Keep it that way: a PR that adds a production dependency needs a strong, documented reason.
 

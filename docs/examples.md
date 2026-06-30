@@ -1,4 +1,4 @@
-# Examples — `@nirholas/x402-fetch`
+# Examples — `@three-ws/x402-fetch`
 
 Runnable examples. Each block is complete — copy it into a `.mjs` file (or a module-type project) and run with Node ≥ 18. Replace endpoint URLs with a real x402 endpoint and fund the wallet with USDC on Base.
 
@@ -12,8 +12,8 @@ A single paid `GET`. The 402, signature, and retry are invisible to your code.
 
 ```js
 // pay.mjs — run: WALLET_PRIVATE_KEY=0x… node pay.mjs
-import { withX402 } from '@nirholas/x402-fetch';
-import { privateKeyToWallet } from '@nirholas/x402-fetch/wallet';
+import { withX402 } from '@three-ws/x402-fetch';
+import { privateKeyToWallet } from '@three-ws/x402-fetch/wallet';
 
 const wallet = privateKeyToWallet(process.env.WALLET_PRIVATE_KEY);
 console.log('Paying from', wallet.address);
@@ -35,8 +35,8 @@ console.log(await res.json());
 `onPayment` fires once per payment, just before the signature, with the USD amount and recipient. Use it to log, meter, or enforce a running budget.
 
 ```js
-import { withX402 } from '@nirholas/x402-fetch';
-import { privateKeyToWallet } from '@nirholas/x402-fetch/wallet';
+import { withX402 } from '@three-ws/x402-fetch';
+import { privateKeyToWallet } from '@three-ws/x402-fetch/wallet';
 
 let spent = 0;
 const BUDGET = 1.00; // total USD across the whole run
@@ -65,8 +65,8 @@ console.log(await res.json());
 A typical autonomous-agent pattern: the same wrapped fetch reused across a tool loop, with per-call cost protection.
 
 ```js
-import { withX402 } from '@nirholas/x402-fetch';
-import { privateKeyToWallet } from '@nirholas/x402-fetch/wallet';
+import { withX402 } from '@three-ws/x402-fetch';
+import { privateKeyToWallet } from '@three-ws/x402-fetch/wallet';
 
 const pay = withX402(privateKeyToWallet(process.env.WALLET_PRIVATE_KEY), {
   maxPaymentUsd: 0.05,
@@ -102,7 +102,7 @@ for (const tool of tools) {
 If your app already uses viem, pass a `LocalAccount` straight in — no key handling in this package, viem signs.
 
 ```js
-import { withX402 } from '@nirholas/x402-fetch';
+import { withX402 } from '@three-ws/x402-fetch';
 import { privateKeyToAccount } from 'viem/accounts';
 
 const account = privateKeyToAccount(process.env.WALLET_PRIVATE_KEY);
@@ -121,7 +121,7 @@ A viem `WalletClient` works too, as long as it exposes `account.address` and a `
 In the browser, pass the injected provider. The user approves each signature in their wallet.
 
 ```js
-import { withX402 } from '@nirholas/x402-fetch';
+import { withX402 } from '@three-ws/x402-fetch';
 
 if (!window.ethereum) throw new Error('No EIP-1193 wallet found');
 
@@ -151,8 +151,8 @@ document.querySelector('#unlock').addEventListener('click', async () => {
 Branch on every documented failure.
 
 ```js
-import { withX402 } from '@nirholas/x402-fetch';
-import { privateKeyToWallet } from '@nirholas/x402-fetch/wallet';
+import { withX402 } from '@three-ws/x402-fetch';
+import { privateKeyToWallet } from '@three-ws/x402-fetch/wallet';
 
 const pay = withX402(privateKeyToWallet(process.env.WALLET_PRIVATE_KEY), {
   maxPaymentUsd: 0.10,
@@ -196,8 +196,8 @@ if (data) console.log(data);
 Dropping into existing `x402-fetch` code? Use the alias.
 
 ```js
-import { wrapFetchWithPayment } from '@nirholas/x402-fetch';
-import { privateKeyToWallet } from '@nirholas/x402-fetch/wallet';
+import { wrapFetchWithPayment } from '@three-ws/x402-fetch';
+import { privateKeyToWallet } from '@three-ws/x402-fetch/wallet';
 
 const pay = wrapFetchWithPayment(
   fetch,
@@ -216,8 +216,8 @@ console.log(await res.json());
 When an endpoint offers payment on several chains, pin the one you want with `network` (CAIP-2). Otherwise Base mainnet wins by default.
 
 ```js
-import { withX402 } from '@nirholas/x402-fetch';
-import { privateKeyToWallet } from '@nirholas/x402-fetch/wallet';
+import { withX402 } from '@three-ws/x402-fetch';
+import { privateKeyToWallet } from '@three-ws/x402-fetch/wallet';
 
 const pay = withX402(privateKeyToWallet(process.env.WALLET_PRIVATE_KEY), {
   network: 'eip155:8453', // Base mainnet (the default preference, made explicit)

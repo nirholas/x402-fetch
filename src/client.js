@@ -95,7 +95,7 @@ export function buildPaymentPayload({ accept, signature, authorization }) {
 export async function createPaymentHeader({ accept, adapter, nowSeconds, nonce }) {
 	if (!isEvmNetwork(accept.network)) {
 		throw new Error(
-			`x402: network "${accept.network}" is not locally signable by @nirholas/x402-fetch (EVM EIP-3009 / USDC on Base only)`,
+			`x402: network "${accept.network}" is not locally signable by @three-ws/x402-fetch (EVM EIP-3009 / USDC on Base only)`,
 		);
 	}
 	const chainId = EVM_CHAIN_IDS[accept.network];

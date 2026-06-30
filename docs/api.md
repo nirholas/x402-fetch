@@ -1,4 +1,4 @@
-# API reference — `@nirholas/x402-fetch`
+# API reference — `@three-ws/x402-fetch`
 
 Complete reference for every public export. For a guided introduction, start with the [README](../README.md). For runnable scripts, see [`examples.md`](./examples.md).
 
@@ -9,10 +9,10 @@ import withX402, {
   withX402,
   wrapFetchWithPayment,
   privateKeyToWallet,
-} from '@nirholas/x402-fetch';
+} from '@three-ws/x402-fetch';
 ```
 
-`privateKeyToWallet` is **also** available from the lighter `@nirholas/x402-fetch/wallet` subpath (signer only, no fetch wrapper).
+`privateKeyToWallet` is **also** available from the lighter `@three-ws/x402-fetch/wallet` subpath (signer only, no fetch wrapper).
 
 ---
 
