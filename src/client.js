@@ -1,8 +1,6 @@
 // Payment client — turns a selected 402 requirement + a wallet into a signed
-// X-PAYMENT header, mirroring the wire shape the three.ws server verifies
-// (api/_lib/x402-spec.js) and the in-repo browser paywall builds
-// (public/x402-pay-core.js): an EIP-3009 transferWithAuthorization signature
-// wrapped in a v2 PaymentPayload.
+// X-PAYMENT header, mirroring the wire shape an x402 v2 server verifies: an
+// EIP-3009 transferWithAuthorization signature wrapped in a v2 PaymentPayload.
 
 import { isEvmNetwork } from './parse-challenge.js';
 
@@ -97,7 +95,7 @@ export function buildPaymentPayload({ accept, signature, authorization }) {
 export async function createPaymentHeader({ accept, adapter, nowSeconds, nonce }) {
 	if (!isEvmNetwork(accept.network)) {
 		throw new Error(
-			`x402: network "${accept.network}" is not locally signable by @three-ws/x402-fetch (EVM EIP-3009 / USDC on Base only)`,
+			`x402: network "${accept.network}" is not locally signable by @nirholas/x402-fetch (EVM EIP-3009 / USDC on Base only)`,
 		);
 	}
 	const chainId = EVM_CHAIN_IDS[accept.network];

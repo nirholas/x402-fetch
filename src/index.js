@@ -1,11 +1,12 @@
-// @three-ws/x402-fetch — a drop-in `fetch` that silently answers x402 payment
-// challenges. Wrap a wallet once, then call any paid three.ws (or CDP-x402)
-// endpoint as if it were free: on a 402 the wrapper parses the challenge, signs
-// a USDC-on-Base EIP-3009 authorization, and retries with the X-PAYMENT proof.
+// @nirholas/x402-fetch — a drop-in `fetch` that silently answers x402 payment
+// challenges. Wrap a wallet once, then call any paid x402 endpoint (CDP-x402 or
+// any compliant merchant) as if it were free: on a 402 the wrapper parses the
+// challenge, signs a USDC-on-Base EIP-3009 authorization, and retries with the
+// X-PAYMENT proof.
 //
-//   import { withX402 } from '@three-ws/x402-fetch';
+//   import { withX402 } from '@nirholas/x402-fetch';
 //   const pay = withX402(wallet, { maxPaymentUsd: 0.10 });
-//   const res = await pay('https://three.ws/api/mcp', { method: 'POST', body });
+//   const res = await pay('https://api.example.com/paid', { method: 'POST', body });
 //
 // Zero production dependencies — the secp256k1 / keccak256 / EIP-712 stack is
 // inlined (src/crypto/*). See README for wallet forms and options.
@@ -17,8 +18,8 @@ import { createPaymentHeader } from './client.js';
 const DEFAULT_MAX_PAYMENT_USD = 0.1;
 const DEFAULT_TIMEOUT_MS = 15000;
 
-// The package supports three call conventions so the generated snippets across
-// three.ws (wallet-first) and the upstream x402-fetch (fetch-first) both work:
+// The package supports three call conventions so both the wallet-first snippets
+// and the upstream x402-fetch (fetch-first) shape work:
 //   withX402(wallet, options?)
 //   withX402(fetch, wallet)                    // upstream wrapFetchWithPayment shape
 //   withX402(fetch, { wallet, ...options })

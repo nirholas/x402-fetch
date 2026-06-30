@@ -5,7 +5,7 @@
 // Accepted inputs:
 //   1. EIP-1193 provider (window.ethereum / any object with `.request`) — browser.
 //   2. A pre-built wallet object `{ address, signTypedData(typedData) }` —
-//      the three.ws agent SDK and viem LocalAccounts both satisfy this.
+//      viem LocalAccounts and most signer SDKs satisfy this.
 //   3. A private key (0x-hex string) via `privateKeyToWallet(pk)` — Node.
 
 import { eip712Digest } from './crypto/eip712.js';
@@ -47,7 +47,7 @@ async function resolveAddress(wallet) {
 		if (!addr) throw new Error('x402: wallet returned no account');
 		return addr;
 	}
-	// Pre-built wallet object (three.ws SDK / viem LocalAccount / viem WalletClient).
+	// Pre-built wallet object (viem LocalAccount / viem WalletClient / any signer SDK).
 	const addr = wallet?.address || wallet?.account?.address;
 	if (!addr) throw new Error('x402: wallet object must expose an `address`');
 	return addr;
@@ -81,8 +81,8 @@ export function adaptWallet(wallet) {
 				});
 			}
 			if (typeof wallet.signTypedData === 'function') {
-				// viem accounts take the typed-data object directly; the three.ws SDK
-				// wallet uses the same shape. Both resolve to a hex signature.
+				// viem accounts take the typed-data object directly; most signer
+				// SDKs use the same shape. Both resolve to a hex signature.
 				return await wallet.signTypedData(typedData);
 			}
 			throw new Error('x402: wallet does not support signTypedData');

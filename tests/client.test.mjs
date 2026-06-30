@@ -24,7 +24,7 @@ function baseAccept(amount) {
 	};
 }
 
-function challenge402(accepts, resourceUrl = 'https://three.ws/api/mcp') {
+function challenge402(accepts, resourceUrl = 'https://api.example.com/paid') {
 	return new Response(
 		JSON.stringify({
 			x402Version: 2,
@@ -56,7 +56,7 @@ test('1. valid accepts[] triggers a payment + retry, returning the 200', async (
 		success: () => new Response(JSON.stringify({ ok: true, reply: 'hi' }), { status: 200 }),
 	});
 	const pay = withX402(fetchMock, { wallet: WALLET, maxPaymentUsd: 1 });
-	const res = await pay('https://three.ws/api/mcp', { method: 'POST' });
+	const res = await pay('https://api.example.com/paid', { method: 'POST' });
 
 	assert.equal(res.status, 200);
 	assert.deepEqual(await res.json(), { ok: true, reply: 'hi' });
@@ -69,7 +69,7 @@ test('2. the retried request carries a correct X-PAYMENT header', async () => {
 		success: () => new Response('{}', { status: 200 }),
 	});
 	const pay = withX402(fetchMock, { wallet: WALLET, maxPaymentUsd: 1 });
-	await pay('https://three.ws/api/mcp', { method: 'POST' });
+	await pay('https://api.example.com/paid', { method: 'POST' });
 
 	const retry = fetchMock.calls[1];
 	assert.ok(retry.xPayment, 'retry has an X-PAYMENT header');
@@ -113,7 +113,7 @@ test('3. a 402 with no matching network/asset throws descriptively', async () =>
 	const pay = withX402(fetchMock, { wallet: WALLET, maxPaymentUsd: 1 });
 
 	await assert.rejects(
-		() => pay('https://three.ws/api/mcp'),
+		() => pay('https://api.example.com/paid'),
 		/no supported network\/asset was found in accepts\[\]\. Supported: USDC on Base mainnet\./,
 	);
 });
@@ -126,7 +126,7 @@ test('4. maxPaymentUsd is enforced — a $5 challenge throws when the limit is $
 	const pay = withX402(fetchMock, { wallet: WALLET, maxPaymentUsd: 1 });
 
 	await assert.rejects(
-		() => pay('https://three.ws/api/mcp'),
+		() => pay('https://api.example.com/paid'),
 		/exceeds maxPaymentUsd limit of \$1\.0000/,
 	);
 	assert.equal(fetchMock.calls.length, 1, 'never retried — no payment signed');
@@ -142,7 +142,7 @@ test('5. a successful payment → 200 returns the 200 response body', async () =
 			}),
 	});
 	const pay = wrapFetchWithPayment(fetchMock, WALLET, { maxPaymentUsd: 1 });
-	const res = await pay('https://three.ws/api/mcp');
+	const res = await pay('https://api.example.com/paid');
 
 	assert.equal(res.status, 200);
 	assert.deepEqual(await res.json(), { content: 'unlocked', tx: '0xabc' });
@@ -156,7 +156,7 @@ test('6. non-402 responses (200, 404, 500) pass through unchanged', async () => 
 			return new Response(JSON.stringify({ status }), { status });
 		};
 		const pay = withX402(passthrough, { wallet: WALLET, maxPaymentUsd: 1 });
-		const res = await pay('https://three.ws/api/x');
+		const res = await pay('https://api.example.com/free');
 		assert.equal(res.status, status);
 		assert.deepEqual(await res.json(), { status });
 		assert.equal(calls, 1, `status ${status}: no payment attempt, single call`);
@@ -174,10 +174,10 @@ test('onPayment callback fires before signing with USD amount + recipient', asyn
 		maxPaymentUsd: 1,
 		onPayment: (info) => seen.push(info),
 	});
-	await pay('https://three.ws/api/mcp');
+	await pay('https://api.example.com/paid');
 
 	assert.equal(seen.length, 1);
 	assert.equal(seen[0].amount, 0.05);
 	assert.equal(seen[0].to, PAY_TO);
-	assert.equal(seen[0].requestUrl, 'https://three.ws/api/mcp');
+	assert.equal(seen[0].requestUrl, 'https://api.example.com/paid');
 });

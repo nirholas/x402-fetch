@@ -1,5 +1,5 @@
 {
-	"name": "@three-ws/x402-fetch",
+	"name": "@nirholas/x402-fetch",
 	"version": "1.0.1",
 	"description": "Drop-in fetch wrapper that automatically pays x402 payment challenges with USDC on Base",
 	"type": "module",
@@ -40,11 +40,10 @@
 		"usdc",
 		"base",
 		"eip-3009",
-		"agent",
-		"three.ws"
+		"agent"
 	],
-	"author": "nirholas <support@three.ws>",
-	"homepage": "https://three.ws",
+	"author": "nirholas",
+	"homepage": "https://github.com/nirholas/x402-fetch#readme",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/nirholas/x402-fetch.git"

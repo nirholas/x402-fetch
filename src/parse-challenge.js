@@ -1,8 +1,8 @@
 // Parse a 402 Payment Required response into a normalised list of payment
-// requirements. three.ws (and every CDP-x402 / agentic.market merchant) emits the
-// v2 envelope both as the JSON body and as the base64 `PAYMENT-REQUIRED` response
-// header; we read the header first (it survives an already-consumed body and a
-// non-JSON content-type) and fall back to the body.
+// requirements. A compliant x402 merchant emits the v2 envelope both as the JSON
+// body and as the base64 `PAYMENT-REQUIRED` response header; we read the header
+// first (it survives an already-consumed body and a non-JSON content-type) and
+// fall back to the body.
 //
 //   { x402Version: 2, error, resource: { url, ... },
 //     accepts: [{ scheme, network, amount, asset, payTo, maxTimeoutSeconds, extra }],
