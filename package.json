@@ -21,7 +21,9 @@
 	"files": [
 		"dist",
 		"src/*.d.ts",
+		"docs",
 		"README.md",
+		"CONTRIBUTING.md",
 		"LICENSE"
 	],
 	"scripts": {
@@ -40,7 +42,14 @@
 		"usdc",
 		"base",
 		"eip-3009",
-		"agent"
+		"eip-712",
+		"micropayments",
+		"402",
+		"http-402",
+		"pay-per-call",
+		"agent",
+		"ai-agent",
+		"web3"
 	],
 	"author": "nirholas",
 	"homepage": "https://github.com/nirholas/x402-fetch#readme",
