@@ -47,11 +47,10 @@
 	"homepage": "https://three.ws",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/nirholas/three.ws.git",
-		"directory": "packages/x402-fetch"
+		"url": "git+https://github.com/nirholas/x402-fetch.git"
 	},
 	"bugs": {
-		"url": "https://github.com/nirholas/three.ws/issues"
+		"url": "https://github.com/nirholas/x402-fetch/issues"
 	},
 	"publishConfig": {
 		"access": "public"
