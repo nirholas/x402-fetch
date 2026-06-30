@@ -24,7 +24,8 @@
 		"docs",
 		"README.md",
 		"CONTRIBUTING.md",
-		"LICENSE"
+		"LICENSE",
+		"CHANGELOG.md"
 	],
 	"scripts": {
 		"build": "vite build",
