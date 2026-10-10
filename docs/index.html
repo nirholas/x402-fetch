@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>@three-ws/x402-fetch: Drop-in fetch wrapper that automatically pays x402 payment challenges </title>
+<meta name="description" content="Drop-in fetch wrapper that automatically pays x402 payment challenges with USDC on Base">
+<link rel="canonical" href="https://nirholas.github.io/x402-fetch/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="three.ws">
+<meta property="og:title" content="@three-ws/x402-fetch">
+<meta property="og:description" content="Drop-in fetch wrapper that automatically pays x402 payment challenges with USDC on Base">
+<meta property="og:url" content="https://nirholas.github.io/x402-fetch/">
+<meta property="og:image" content="https://nirholas.github.io/x402-fetch/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="@three-ws/x402-fetch">
+<meta name="twitter:description" content="Drop-in fetch wrapper that automatically pays x402 payment challenges with USDC on Base">
+<meta name="twitter:image" content="https://nirholas.github.io/x402-fetch/og.png">
+<meta name="keywords" content="x402, payments, fetch, usdc, base, eip-3009, agent, three.ws, ai-agents">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt">
+<link rel="icon" href="https://three.ws/three-ws-mcp-icon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"@three-ws/x402-fetch","description":"Drop-in fetch wrapper that automatically pays x402 payment challenges with USDC on Base","codeRepository":"https://github.com/nirholas/x402-fetch","programmingLanguage":"JavaScript","license":"https://spdx.org/licenses/Apache-2.0.html","version":"1.0.4","url":"https://nirholas.github.io/x402-fetch/","author":{"@type":"Organization","name":"three.ws","url":"https://three.ws"},"keywords":"x402, payments, fetch, usdc, base, eip-3009, agent, three.ws, ai-agents"}</script>
+<style>:root{--bg:#fff;--fg:#111418;--mut:#586069;--line:#e3e6ea;--acc:#2563eb;--code:#f4f6f8;--card:#fafbfc}
+@media(prefers-color-scheme:dark){:root{--bg:#0b0d10;--fg:#e8eaed;--mut:#9aa3ad;--line:#232830;--acc:#6ea0ff;--code:#14181d;--card:#10141a}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:var(--acc)}a:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+header.bar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{font-weight:700;text-decoration:none;color:var(--fg)}
+.bar nav{margin-left:auto;display:flex;gap:16px;font-size:14px}
+.bar nav a{color:var(--mut);text-decoration:none;transition:color .15s}.bar nav a:hover{color:var(--fg)}
+.hero{max-width:1100px;margin:0 auto;padding:48px 16px 24px}
+.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px;letter-spacing:-.02em}
+.hero p{color:var(--mut);max-width:70ch;font-size:18px;margin:0 0 24px}
+.install{display:flex;align-items:center;gap:8px;max-width:620px;background:var(--code);border:1px solid var(--line);border-radius:10px;padding:6px 6px 6px 14px}
+.install code{flex:1;overflow-x:auto;white-space:nowrap;font:14px ui-monospace,SFMono-Regular,Menlo,monospace}
+.install button{border:0;background:var(--acc);color:#fff;border-radius:7px;padding:8px 14px;font:600 13px system-ui;cursor:pointer;transition:transform .12s,opacity .12s}
+.install button:hover{opacity:.9}.install button:active{transform:scale(.96)}
+.cta{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.cta a{padding:9px 16px;border:1px solid var(--line);border-radius:8px;text-decoration:none;font-weight:600;font-size:14px;color:var(--fg);transition:border-color .15s,transform .15s}
+.cta a:hover{border-color:var(--acc);transform:translateY(-1px)}.cta a.pri{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.layout{max-width:1100px;margin:0 auto;padding:8px 16px 64px;display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:40px}
+@media(max-width:860px){.layout{grid-template-columns:minmax(0,1fr)}.toc{display:none}}
+.toc{position:sticky;top:76px;align-self:start;font-size:14px;border-left:1px solid var(--line);padding-left:16px}
+.toc p{margin:0 0 8px;font-weight:700;color:var(--mut);text-transform:uppercase;font-size:12px;letter-spacing:.06em}
+.toc ul{list-style:none;margin:0;padding:0}.toc li{margin:6px 0}.toc a{color:var(--mut);text-decoration:none}.toc a:hover{color:var(--fg)}
+main{min-width:0;overflow-wrap:anywhere}main pre code{overflow-wrap:normal}main img{max-width:100%;height:auto}
+main h2{margin-top:2.2em;padding-bottom:.3em;border-bottom:1px solid var(--line)}
+.anchor{margin-left:-1.1em;padding-right:.4em;text-decoration:none;opacity:0;color:var(--mut)}h2:hover .anchor,h3:hover .anchor,h4:hover .anchor{opacity:1}
+pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:14px;line-height:1.5}
+code{font:0.9em ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--code);padding:.15em .35em;border-radius:5px}pre code{background:none;padding:0}
+table{border-collapse:collapse;display:block;overflow-x:auto;max-width:100%}th,td{border:1px solid var(--line);padding:8px 12px;text-align:left}th{background:var(--card)}
+blockquote{margin:1em 0;padding:.2em 1em;border-left:4px solid var(--line);color:var(--mut)}
+footer{border-top:1px solid var(--line);color:var(--mut);font-size:14px}
+.foot-in{max-width:1100px;margin:0 auto;padding:24px 16px;display:flex;gap:16px;flex-wrap:wrap}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}</style>
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+<a class="brand" href="https://nirholas.github.io/x402-fetch/">@three-ws/x402-fetch</a>
+<nav aria-label="Project links"><a href="https://github.com/nirholas/x402-fetch">GitHub</a><a href="https://www.npmjs.com/package/@three-ws/x402-fetch">npm</a><a href="llms.txt">llms.txt</a><a href="https://three.ws">three.ws</a></nav>
+</div></header>
+<section class="hero">
+<h1>@three-ws/x402-fetch</h1>
+<p>Drop-in fetch wrapper that automatically pays x402 payment challenges with USDC on Base</p>
+<div class="install" role="group" aria-label="Install command"><code>npm install @three-ws/x402-fetch</code><button type="button" data-copy="npm install @three-ws/x402-fetch">Copy</button></div>
+<div class="cta"><a class="pri" href="https://github.com/nirholas/x402-fetch">View on GitHub</a><a href="https://github.com/nirholas/x402-fetch/stargazers">Star the repo</a></div>
+</section>
+<div class="layout">
+<main id="content"><h1>@three-ws/x402-fetch</h1>
+<p>A drop-in <code>fetch</code> that silently answers <a href="https://x402.org">x402</a> payment
+challenges. Wrap a wallet once, then call any paid <a href="https://three.ws">three.ws</a>
+(or CDP-x402 / agentic.market) endpoint as if it were free.</p>
+<pre><code class="language-bash">npm install @three-ws/x402-fetch
+</code></pre>
+<ul>
+<li><strong>Zero production dependencies.</strong> The secp256k1 / keccak256 / EIP-712 signing
+stack is inlined — no <code>viem</code>, <code>ethers</code>, or <code>@wagmi/core</code> pulled into your bundle.</li>
+<li><strong>Works in the browser and Node.</strong> MetaMask / EIP-1193 providers, the three.ws
+agent SDK wallet, or a raw private key all work.</li>
+<li><strong>Safe by default.</strong> A <code>maxPaymentUsd</code> guard refuses to auto-pay more than you
+authorize. Descriptive errors instead of silent failures.</li>
+<li><strong>USDC on Base.</strong> Signs EIP-3009 <code>transferWithAuthorization</code> — the same payload
+MetaMask&#39;s <code>eth_signTypedData_v4</code> produces, byte-for-byte.</li>
+</ul>
+<h2 id="quick-start"><a class="anchor" href="#quick-start" aria-label="Link to this section">#</a>Quick start</h2>
+<pre><code class="language-js">import { withX402 } from &#39;@three-ws/x402-fetch&#39;;
+
+// Browser: pass the injected wallet provider.
+const pay = withX402(window.ethereum, { maxPaymentUsd: 0.1 });
+
+const res = await pay(&#39;https://three.ws/api/mcp&#39;, {
+	method: &#39;POST&#39;,
+	headers: { &#39;content-type&#39;: &#39;application/json&#39; },
+	body: JSON.stringify({ jsonrpc: &#39;2.0&#39;, id: 1, method: &#39;tools/list&#39; }),
+});
+
+const data = await res.json(); // paid + unlocked, transparently
+</code></pre>
+<p>On a <code>402 Payment Required</code>, the wrapper parses the challenge, selects the USDC-on-Base
+requirement, signs the authorization, and retries with the <code>X-PAYMENT</code> header — all
+before your <code>await</code> resolves. Non-402 responses pass through untouched.</p>
+<h2 id="wallet-forms"><a class="anchor" href="#wallet-forms" aria-label="Link to this section">#</a>Wallet forms</h2>
+<p><strong>Browser (MetaMask / any EIP-1193 provider):</strong></p>
+<pre><code class="language-js">withX402(window.ethereum);
+</code></pre>
+<p><strong>Node.js (private key):</strong></p>
+<pre><code class="language-js">import { withX402 } from &#39;@three-ws/x402-fetch&#39;;
+import { privateKeyToWallet } from &#39;@three-ws/x402-fetch/wallet&#39;;
+
+const pay = withX402(privateKeyToWallet(process.env.WALLET_PRIVATE_KEY));
+</code></pre>
+<p><strong>Pre-built signer (three.ws agent SDK / viem account):</strong></p>
+<pre><code class="language-js">withX402({ address, signTypedData });
+</code></pre>
+<h2 id="options"><a class="anchor" href="#options" aria-label="Link to this section">#</a>Options</h2>
+<pre><code class="language-js">withX402(wallet, {
+	maxPaymentUsd: 1.0, // refuse to auto-pay more than this per request (default 0.10)
+	onPayment: ({ amount, to, requestUrl }) =&gt; console.log(`paying $${amount} to ${to}`),
+	timeout: 30000, // ms to wait for payment authorization (default 15000)
+	network: &#39;eip155:8453&#39;, // prefer a specific CAIP-2 network from accepts[]
+});
+</code></pre>
+<p><code>maxPaymentUsd</code> is a hard guard: a challenge above the limit throws rather than
+paying, so a misconfigured or hostile server can never silently overcharge you.</p>
+<h2 id="compatibility-alias"><a class="anchor" href="#compatibility-alias" aria-label="Link to this section">#</a>Compatibility alias</h2>
+<p>For parity with the upstream <code>x402-fetch</code> package, <code>wrapFetchWithPayment</code> is
+exported with the fetch-first signature:</p>
+<pre><code class="language-js">import { wrapFetchWithPayment } from &#39;@three-ws/x402-fetch&#39;;
+const pay = wrapFetchWithPayment(fetch, wallet);
+</code></pre>
+<h2 id="errors"><a class="anchor" href="#errors" aria-label="Link to this section">#</a>Errors</h2>
+<table>
+<thead>
+<tr>
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>no supported network/asset was found in accepts[]</code></td>
+<td>The server only offered networks/assets this wrapper can&#39;t sign (it signs USDC on Base / EVM EIP-3009).</td>
+</tr>
+<tr>
+<td><code>payment of $X exceeds maxPaymentUsd limit</code></td>
+<td>The challenge asked for more than your authorized ceiling.</td>
+</tr>
+<tr>
+<td><code>user rejected payment</code></td>
+<td>The wallet user cancelled the signature.</td>
+</tr>
+<tr>
+<td><code>payment submitted but server still returned 402</code></td>
+<td>The retry was still gated — usually an amount/recipient mismatch.</td>
+</tr>
+</tbody></table>
+<h2 id="examples"><a class="anchor" href="#examples" aria-label="Link to this section">#</a>Examples</h2>
+<p>Runnable scripts live in <a href="https://github.com/nirholas/x402-fetch/blob/main/examples"><code>examples/</code></a>: a zero-spend 402 discovery probe and a real env-gated paid call against the live three.ws Market Data API.</p>
+<h2 id="license"><a class="anchor" href="#license" aria-label="Link to this section">#</a>License</h2>
+<p>Apache-2.0. See <a href="https://github.com/nirholas/x402-fetch/blob/main/LICENSE">LICENSE</a>.</p>
+</main>
+<nav class="toc" aria-label="On this page"><p>On this page</p><ul><li><a href="#quick-start">Quick start</a></li><li><a href="#wallet-forms">Wallet forms</a></li><li><a href="#options">Options</a></li><li><a href="#compatibility-alias">Compatibility alias</a></li><li><a href="#errors">Errors</a></li><li><a href="#examples">Examples</a></li><li><a href="#license">License</a></li></ul></nav>
+</div>
+<footer><div class="foot-in"><span>Apache-2.0 licensed</span><a href="https://github.com/nirholas/x402-fetch/issues">Issues</a><a href="https://github.com/nirholas/x402-fetch/blob/main/CONTRIBUTING.md">Contributing</a><a href="https://github.com/nirholas/x402-fetch/security/policy">Security</a><a href="https://three.ws">Part of three.ws</a></div></footer>
+<script>document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){
+var t=b.getAttribute('data-copy');var done=function(){var o=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=o},1400)};
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){})}
+else{var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');done()}catch(e){}a.remove()}})});</script>
+</body>
+</html>

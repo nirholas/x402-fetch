@@ -1,0 +1,19 @@
+# @three-ws/x402-fetch
+
+> Drop-in fetch wrapper that automatically pays x402 payment challenges with USDC on Base
+
+@three-ws/x402-fetch is a JavaScript library from three.ws. Install: `npm install @three-ws/x402-fetch`.
+
+## Docs
+
+- [README](https://github.com/nirholas/x402-fetch/blob/main/README.md): install, configuration, full reference
+- [Documentation site](https://nirholas.github.io/x402-fetch/): the README as a web page
+- [Full text for LLMs](https://nirholas.github.io/x402-fetch/llms-full.txt): README inlined
+- [AGENTS.md](https://github.com/nirholas/x402-fetch/blob/main/AGENTS.md): guidance for coding agents
+
+## Project
+
+- [Source](https://github.com/nirholas/x402-fetch)
+- [npm](https://www.npmjs.com/package/@three-ws/x402-fetch)
+- [three.ws](https://three.ws): the platform this is part of
+- [Issues](https://github.com/nirholas/x402-fetch/issues)
